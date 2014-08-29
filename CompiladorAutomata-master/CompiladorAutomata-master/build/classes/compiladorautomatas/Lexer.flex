@@ -1,9 +1,9 @@
-package analizador;
-import static analizador.Token.*;
+package compiladorautomatas;
+import static compiladorautomatas.Tokens.*;
 %%
 %class Lexer
-%type Token
-L = [a-zA-Z_]
+%type Tokens
+L = [a-bA-Z_]
 D = [0-9]
 WHITE=[ \t\r\n]
 %{
@@ -11,11 +11,11 @@ public String lexeme;
 %}
 %%
 {WHITE} {/*Ignore*/}
-"=" {return ASSIGN;}
-"+" {return SUMA;}
-"*" {return MULT;}
-"-" {return RESTA;}
-"/" {return DIV;}
-{L}({L}|{D})* {lexeme=yytext(); return ID;}
- ("(-"{D}+")")|{D}+ {lexeme=yytext(); return INT;}
+"Declare" {return Declare;}
+"Entero" {return Entero;}
+"Real" {return Real;}
+"Cadena" {return Cadena;}
+"Fecha" {return Fecha;}
+"Logico" {return Logico;}
+
 . {return ERROR;}

@@ -6,6 +6,18 @@
 
 package compiladorautomatas;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author anon
@@ -15,6 +27,7 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+
     public Principal() {
         initComponents();
     }
@@ -42,8 +55,18 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Analizar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
@@ -79,11 +102,25 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            probarLexerFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       jTextArea1.setText(" ");
+       jTextArea2.setText(" ");
+       
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,6 +155,68 @@ public class Principal extends javax.swing.JFrame {
                 new Principal().setVisible(true);
             }
         });
+    }
+    
+    public void probarLexerFile() throws IOException{
+        File fichero = new File ("fichero.txt");
+        PrintWriter writer;
+        try {
+            writer = new PrintWriter(fichero);
+            writer.print(jTextArea1.getText());
+            writer.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Reader reader = new BufferedReader(new FileReader("fichero.txt"));
+        Lexer lexer = new Lexer (reader);
+        String resultado="";
+        while (true){
+            Tokens token =lexer.yylex();
+            if (token == null){
+                
+                
+            }
+            
+            switch (token){
+                
+                case Declare:
+                    resultado=token+ "<Expresion Declare, sin errrores>\n";
+                    jTextArea2.setText(resultado);
+                    break;
+                case Entero:
+                    resultado=resultado+ "<Expresion Entero, sin errores>\n";
+                    jTextArea2.setText(resultado);
+                    break; 
+                case Cadena:
+                    resultado=resultado+ "<Expresion Cadena, sin errores>\n";
+                    jTextArea2.setText(resultado);
+                    break;
+                case Fecha:
+                    resultado=resultado+ "<Expresion Fecha, sin errores>\n";
+                    jTextArea2.setText(resultado);
+                    break;
+                case Logico:
+                    resultado=resultado+ "<Expresion Logico, sin errores>\n";
+                    jTextArea2.setText(resultado);
+                    break;
+                case Real:
+                    resultado=resultado+ "<Expresion Real, sin errores >\n";
+                    jTextArea2.setText(resultado);
+                    break;
+                case ERROR:
+                   resultado=resultado+ "Error, simbolo no reconocido ";
+                    jTextArea2.setText(resultado);
+                    break;
+                default:
+                  //  resultado=resultado+ "<"+ lexer.lexeme + "> ";
+            }
+            
+    }
+        
+ }
+    
+    public  void  errores_declare(){
+        jTextArea2.setText("palabra <Declare> mal escrita!");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

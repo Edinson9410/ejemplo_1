@@ -11,5 +11,8 @@ package compiladorautomatas;
  * @author anon
  */
 public enum Tokens {
-    
+        Declare,Entero, Real, Cadena, Fecha, Logico,ERROR;
+        
+        
+        
 }
